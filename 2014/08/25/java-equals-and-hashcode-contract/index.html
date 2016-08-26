@@ -20,20 +20,20 @@
 它们是非常被非常重要的，所以有必要理解它们，特别是当用户添加自定义的对象被到Map上的时候。即使是这样，有的高级工程师有时也弄不清应应该如何正确使用。在这篇文章中，我将首先用一个常见的错误例子，来说明">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Java的equals() 和 hashCode() 规范">
-<meta property="og:url" content="http://yoursite.com/2014/08/25/java-equals-and-hashcode-contract/index.html">
+<meta property="og:url" content="http://blog.leeln.com/2014/08/25/java-equals-and-hashcode-contract/index.html">
 <meta property="og:site_name" content="Javy">
 <meta property="og:description" content="在Java中有个java.lang.Object的超类，定义了2个非常重要的方法:
 12public boolean equals(Object obj)public int hashCode()
 它们是非常被非常重要的，所以有必要理解它们，特别是当用户添加自定义的对象被到Map上的时候。即使是这样，有的高级工程师有时也弄不清应应该如何正确使用。在这篇文章中，我将首先用一个常见的错误例子，来说明">
-<meta property="og:image" content="http://yoursite.com/assets/images/java-hashcode-650x369.jpeg">
-<meta property="og:image" content="http://yoursite.com/assets/images/hashCode-and-equals-contract-600x268.png">
+<meta property="og:image" content="http://blog.leeln.com/assets/images/java-hashcode-650x369.jpeg">
+<meta property="og:image" content="http://blog.leeln.com/assets/images/hashCode-and-equals-contract-600x268.png">
 <meta property="og:updated_time" content="2015-08-02T05:55:13.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java的equals() 和 hashCode() 规范">
 <meta name="twitter:description" content="在Java中有个java.lang.Object的超类，定义了2个非常重要的方法:
 12public boolean equals(Object obj)public int hashCode()
 它们是非常被非常重要的，所以有必要理解它们，特别是当用户添加自定义的对象被到Map上的时候。即使是这样，有的高级工程师有时也弄不清应应该如何正确使用。在这篇文章中，我将首先用一个常见的错误例子，来说明">
-<meta name="twitter:image" content="http://yoursite.com/assets/images/java-hashcode-650x369.jpeg">
+<meta name="twitter:image" content="http://blog.leeln.com/assets/images/java-hashcode-650x369.jpeg">
     
     
         
@@ -275,7 +275,7 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/08/26/create-java-string-by-double-quotes-vs-by-constructor/"  data-tooltip="java中创建字符串使用&quot;&quot;或者构造函数?">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/08/25/java-and-computer-science-courses/"  data-tooltip="java工程师应该学的课程">
                 
                     <i class="fa fa-angle-left"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -283,7 +283,7 @@
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/08/25/java-and-computer-science-courses/" data-tooltip="java工程师应该学的课程">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/08/24/frequently-used-methods-of-java-hashmap/" data-tooltip="常用的HashMap方法">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right"></i>
@@ -298,17 +298,17 @@
             </a>
         </li>
         <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2014/08/25/java-equals-and-hashcode-contract/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://blog.leeln.com/2014/08/25/java-equals-and-hashcode-contract/">
                 <i class="fa fa-google-plus"></i>
             </a>
         </li>
         <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2014/08/25/java-equals-and-hashcode-contract/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.leeln.com/2014/08/25/java-equals-and-hashcode-contract/">
                 <i class="fa fa-facebook-official"></i>
             </a>
         </li>
         <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2014/08/25/java-equals-and-hashcode-contract/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://blog.leeln.com/2014/08/25/java-equals-and-hashcode-contract/">
                 <i class="fa fa-twitter"></i>
             </a>
         </li>
@@ -333,7 +333,7 @@
         
             
                 <div id="ds-thread" class="ds-thread" data-thread-key="2014/08/25/java-equals-and-hashcode-contract/"
-     data-title="Java的equals() 和 hashCode() 规范" data-url="http://yoursite.com/2014/08/25/java-equals-and-hashcode-contract/">
+     data-title="Java的equals() 和 hashCode() 规范" data-url="http://blog.leeln.com/2014/08/25/java-equals-and-hashcode-contract/">
 </div>
 
             
@@ -357,7 +357,7 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/08/26/create-java-string-by-double-quotes-vs-by-constructor/"  data-tooltip="java中创建字符串使用&quot;&quot;或者构造函数?">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/08/25/java-and-computer-science-courses/"  data-tooltip="java工程师应该学的课程">
                 
                     <i class="fa fa-angle-left"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -365,7 +365,7 @@
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/08/25/java-and-computer-science-courses/" data-tooltip="java工程师应该学的课程">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/08/24/frequently-used-methods-of-java-hashmap/" data-tooltip="常用的HashMap方法">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right"></i>
@@ -380,17 +380,17 @@
             </a>
         </li>
         <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2014/08/25/java-equals-and-hashcode-contract/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://blog.leeln.com/2014/08/25/java-equals-and-hashcode-contract/">
                 <i class="fa fa-google-plus"></i>
             </a>
         </li>
         <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2014/08/25/java-equals-and-hashcode-contract/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.leeln.com/2014/08/25/java-equals-and-hashcode-contract/">
                 <i class="fa fa-facebook-official"></i>
             </a>
         </li>
         <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2014/08/25/java-equals-and-hashcode-contract/">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://blog.leeln.com/2014/08/25/java-equals-and-hashcode-contract/">
                 <i class="fa fa-twitter"></i>
             </a>
         </li>
@@ -416,17 +416,17 @@
                 <div id="share-options-bar" class="share-options-bar" data-behavior="5">
     <ul class="share-options">
         <li class="share-option">
-            <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2014/08/25/java-equals-and-hashcode-contract/">
+            <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://blog.leeln.com/2014/08/25/java-equals-and-hashcode-contract/">
                 <i class="fa fa-google-plus"></i><span>分享到 Google+</span>
             </a>
         </li>
         <li class="share-option">
-            <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2014/08/25/java-equals-and-hashcode-contract/">
+            <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://blog.leeln.com/2014/08/25/java-equals-and-hashcode-contract/">
                 <i class="fa fa-facebook-official"></i><span>分享到 Facebook</span>
             </a>
         </li>
         <li class="share-option">
-            <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2014/08/25/java-equals-and-hashcode-contract/">
+            <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://blog.leeln.com/2014/08/25/java-equals-and-hashcode-contract/">
                 <i class="fa fa-twitter"></i><span>分享到 Twitter</span>
             </a>
         </li>
@@ -490,7 +490,7 @@
                 <div class="media">
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://yoursite.com/2013/05/25/video-post/">
+                        <a class="link-unstyled" href="http://blog.leeln.com/2013/05/25/video-post/">
                             <h3 class="media-heading">带有视频的文章</h3>
                         </a>
                         <span class="media-meta">
@@ -509,7 +509,7 @@
                 <div class="media">
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://yoursite.com/2013/08/16/linux-command-common/">
+                        <a class="link-unstyled" href="http://blog.leeln.com/2013/08/16/linux-command-common/">
                             <h3 class="media-heading">linux 命令之常用命令</h3>
                         </a>
                         <span class="media-meta">
@@ -530,7 +530,7 @@
                 <div class="media">
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://yoursite.com/2013/08/17/linux-command-user-manager/">
+                        <a class="link-unstyled" href="http://blog.leeln.com/2013/08/17/linux-command-user-manager/">
                             <h3 class="media-heading">linux 命令之用户管理</h3>
                         </a>
                         <span class="media-meta">
@@ -551,7 +551,7 @@
                 <div class="media">
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://yoursite.com/2013/08/20/grunt-intro/">
+                        <a class="link-unstyled" href="http://blog.leeln.com/2013/08/20/grunt-intro/">
                             <h3 class="media-heading">grunt 简易教程</h3>
                         </a>
                         <span class="media-meta">
@@ -570,7 +570,7 @@
                 <div class="media">
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://yoursite.com/2013/08/20/javascript-create-object/">
+                        <a class="link-unstyled" href="http://blog.leeln.com/2013/08/20/javascript-create-object/">
                             <h3 class="media-heading">JavaScript——创建对象方式</h3>
                         </a>
                         <span class="media-meta">
@@ -608,7 +608,7 @@
                 <div class="media">
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                        <a class="link-unstyled" href="http://blog.leeln.com/2013/09/03/java-equals-hashcode/">
                             <h3 class="media-heading">Java—— equals 和 hashCode</h3>
                         </a>
                         <span class="media-meta">
@@ -629,7 +629,7 @@
                 <div class="media">
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://yoursite.com/2013/09/10/javascript-qunit/">
+                        <a class="link-unstyled" href="http://blog.leeln.com/2013/09/10/javascript-qunit/">
                             <h3 class="media-heading">javascript单元测试Qunit</h3>
                         </a>
                         <span class="media-meta">
@@ -669,7 +669,7 @@
                 <div class="media">
                     
                     <div class="media-body">
-                        <a class="link-unstyled" href="http://yoursite.com/2013/10/27/javascript-prototype-chaining/">
+                        <a class="link-unstyled" href="http://blog.leeln.com/2013/10/27/javascript-prototype-chaining/">
                             <h3 class="media-heading">JavaScript——原型</h3>
                         </a>
                         <span class="media-meta">
