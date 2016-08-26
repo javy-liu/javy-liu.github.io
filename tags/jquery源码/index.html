@@ -1,0 +1,851 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Javy">
+    <title>标签: jquery源码 - Javy</title>
+    <meta name="author" content="Javy Liu">
+    
+        <meta name="keywords" content="java,架构,javy,">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <meta property="og:type" content="blog">
+<meta property="og:title" content="Javy">
+<meta property="og:url" content="http://yoursite.com/tags/jquery源码/index.html">
+<meta property="og:site_name" content="Javy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Javy">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-k4xay3guonbq17i5ncptfwd7qit65f9ej8kvs1xmyz03qkjtvgsaixieetui.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-83145813-1']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+    
+    <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?1ada6b8f9835dd208260a883c6e2b083";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Javy</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link open-algolia-search"
+                             href="#search"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-search"></i>
+                        <span class="sidebar-button-desc">搜索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/atom.xml"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+    <section class="postShorten-group main-content-wrap">
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
+                        <a class="link-unstyled" href="/2013/11/25/jquery-learn-source-selector/">
+                            jQuery源码学习(8)——selector模块
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2013-11-25T12:45:00+08:00">
+	
+		    11月 25, 2013
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt" itemprop="articleBody">
+                    <p>selector是jQuery主打的一个模块，可以说jQuery的强大就是其selector。目前其的selector已经分成另外的一个(sizzle)[]项目了。</p>
+<p>在jQuery中采用调用sizzle来实现selector，接下来详细分析。</p>
+<h3 id="模块结构"><a href="#模块结构" class="headerlink" title="模块结构"></a>模块结构</h3><p>jQuery的selector模块依赖如下：</p>
+<pre><code>selector -&gt; selector-sizzle -&gt; sizzle
+</code></pre><p>主要实现是sizzle。selector-sizzle只是定义了一些jQuery常用的sizzle的变量。selector直接就是一个申明依赖。<br>
+                    
+                        <a href="/2013/11/25/jquery-learn-source-selector/" class="postShorten-excerpt_link link">
+                            阅读全文
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
+                        <a class="link-unstyled" href="/2013/11/06/jquery-learn-source-parseHTML/">
+                            jQuery源码学习(8)——parseHTML模块
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2013-11-06T13:12:00+08:00">
+	
+		    11月 06, 2013
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt" itemprop="articleBody">
+                    <p>jQuery中的parseHTML模块主要是用来创建DOM元素的，类似于createElement。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// data: html字符串</span></div><div class="line"><span class="comment">// context (可选): 如果定义, 将会在这个上下文中将创建的HTML片段, 默认是document</span></div><div class="line"><span class="comment">// keepScripts (可选): 一个布尔值，表明是否在传递的HTML字符串中包含脚本。</span></div><div class="line">jQuery.parseHTML = <span class="function"><span class="keyword">function</span>(<span class="params"> data, context, keepScripts </span>) </span>&#123;</div><div class="line">	<span class="comment">// ...... 实现省略</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+                    
+                        <a href="/2013/11/06/jquery-learn-source-parseHTML/" class="postShorten-excerpt_link link">
+                            阅读全文
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
+                        <a class="link-unstyled" href="/2013/11/05/jquery-learn-source-deferred/">
+                            jQuery源码学习(8)——Deferred模块
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2013-11-05T14:45:00+08:00">
+	
+		    11月 05, 2013
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt" itemprop="articleBody">
+                    <p>jQuery从1.5版本开始引入了Deferred对象。在jQuery中Deferred对象用来解决回调函数问题。</p>
+<p>Deferred对象是非常cool的。比如：当你想将一个事件程序关联到一个鼠标点击，你就会为它分配的元素的onclick事件，如：<code>button.onclick= MyHandler</code>。这个控件也需要这个处理的逻辑的时候，比如：<code>button.onclick= MyHandler2</code>时。常规中这样是满足不了要求的，因为你只能在一个时间分配一个功能。原来可以使用 DOM的addEventListener（）的功能，它允许您添加尽可能多的事件，这个问题最终得到解决。现在，类似的问题又出现了使用Ajax调用。这一次，因为Ajax的限制，只支持一个回调函数。 所以，再使用DOM的addEventListener（）却不可能满足。所以引入了Deferred对象。<br>
+                    
+                        <a href="/2013/11/05/jquery-learn-source-deferred/" class="postShorten-excerpt_link link">
+                            阅读全文
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
+                        <a class="link-unstyled" href="/2013/11/04/jquery-learn-source-ready/">
+                            jQuery源码学习(8)——ready模块
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2013-11-04T14:45:00+08:00">
+	
+		    11月 04, 2013
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt" itemprop="articleBody">
+                    <p>使用jQuery库时，通常会使用ready函数。jQuery的ready函数不同与window.onload,如果你测试一下就会发现。</p>
+<p>window.onload是在所有资源都加载完成时候触发,当资源比较大，比如图片文件较多的时候，window.onload的触发就会延迟很多，<br>影响用户体验。</p>
+<p>jQuery.ready是在页面准备好之后就会触发，会先于window.onload事件。</p>
+<p>jQuery是如何实现这个过程的呢？看完ready模块就明白了。<br>
+                    
+                        <a href="/2013/11/04/jquery-learn-source-ready/" class="postShorten-excerpt_link link">
+                            阅读全文
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
+                        <a class="link-unstyled" href="/2013/11/03/jquery-learn-source-init/">
+                            jQuery源码学习(8)——init模块
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2013-11-03T12:15:00+08:00">
+	
+		    11月 03, 2013
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt" itemprop="articleBody">
+                    <p>在core模块中，我们分析了实例化一个jQuery对象是由工厂方法<code>jQuery</code>交给了jQuery.fn.init。这个init实现是在init模块中完成的。</p>
+<p>init模块最主要的任务还是实例化时传入的属性判断，具体实现还是交给另外的模块实现的。</p>
+<p>比如：调用<code>$(function(){})</code>的时候，init判断是一个DOM ready函数，它就采用ready模块来实现。</p>
+<p>再比如：调用<code>$(&#39;&lt;div&gt;&lt;/div&gt;&#39;)</code>的时候，因为判断字符串为一个html类型的，使用init模块会尝试去创建这个节点。这部分会依赖于parseHTML模块。</p>
+                    
+                        <a href="/2013/11/03/jquery-learn-source-init/" class="postShorten-excerpt_link link">
+                            阅读全文
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
+                        <a class="link-unstyled" href="/2013/11/02/jquery-learn-source-core/">
+                            jQuery源码学习(8)——core模块
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2013-11-02T14:45:00+08:00">
+	
+		    11月 02, 2013
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt" itemprop="articleBody">
+                    <p>jQuery模块化的开端是jquery.js文件，在这个文件中详细的列出了jquery的模块。</p>
+<p>一共有29个模块，其中有的是基础模块，像<code>core</code>别的模块都会依赖于它。<br>除了基础模块，别的模块都可以在自定义打包中决定是否需要。</p>
+<p>打包之后的代码会被<code>intro.js</code>与<code>outro.js</code>包围。形成如下代码的格式：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">window,factory</span>)</span>&#123;</div><div class="line">	<span class="comment">//检测是否支持模块</span></div><div class="line">	<span class="keyword">if</span> (<span class="keyword">typeof</span> <span class="built_in">module</span> === <span class="string">"object"</span> &amp;&amp; <span class="keyword">typeof</span> <span class="built_in">module</span>.exports === <span class="string">"object"</span>) &#123;</div><div class="line">		<span class="comment">//检查是否模块环境中是否开启了window对象</span></div><div class="line">		<span class="comment">//如果支持模块化的话采用模块化实例化工厂</span></div><div class="line">		<span class="comment">//否则就用默认方式</span></div><div class="line">		<span class="built_in">module</span>.exports = <span class="function"><span class="keyword">function</span>(<span class="params"> w </span>) </span>&#123;</div><div class="line">			w = w || <span class="built_in">window</span>;</div><div class="line">			<span class="keyword">if</span> ( !w.document ) &#123;</div><div class="line">				<span class="keyword">throw</span> <span class="keyword">new</span> <span class="built_in">Error</span>(<span class="string">"jQuery需要一个包含document的window对象"</span>);</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">return</span> factory( w );</div><div class="line">		&#125;;</div><div class="line">	&#125; <span class="keyword">else</span> &#123;</div><div class="line">		factory( <span class="built_in">window</span> );</div><div class="line">	&#125;</div><div class="line">&#125;(<span class="keyword">this</span>,<span class="function"><span class="keyword">function</span>(<span class="params">window</span>)</span>&#123;</div><div class="line">	<span class="comment">// 框架主体部分</span></div><div class="line">&#125;));</div></pre></td></tr></table></figure></p>
+                    
+                        <a href="/2013/11/02/jquery-learn-source-core/" class="postShorten-excerpt_link link">
+                            阅读全文
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
+                        <a class="link-unstyled" href="/2013/11/01/jquery-learn-source-unit/">
+                            jQuery源码学习(8)——团队财富单元测试
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2013-11-01T12:45:00+08:00">
+	
+		    11月 01, 2013
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt" itemprop="articleBody">
+                    <p>jQuery使用<a href="http://qunitjs.com/">QUnit</a>来测试javascript正确性，使用<a href="http://benchmarkjs.com/">Benchmark</a>来测试其选择元素的速度快慢。如果你不熟悉QUnit库参考我的一篇教程<a href="!--￼1--">javascript单元测试Qunit</a></p>
+<p>我并没沿用jQuery的Qunit测试，我为了更方便的研究，在测试中集成了requirejs。</p>
+<p>测试目录文件如下：<br><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">test/ -- 测试目录</div><div class="line"> ├── data/ -- 测试辅助相关数据目录</div><div class="line"> ├── unit/ -- 单元测试目录</div><div class="line"> └── index.html -- 默认页面</div></pre></td></tr></table></figure></p>
+                    
+                        <a href="/2013/11/01/jquery-learn-source-unit/" class="postShorten-excerpt_link link">
+                            阅读全文
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
+                        <a class="link-unstyled" href="/2013/10/31/jquery-learn-source-requirejs/">
+                            jQuery源码学习(8)——结构清晰的AMD
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2013-10-31T12:45:00+08:00">
+	
+		    10月 31, 2013
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt" itemprop="articleBody">
+                    <p>jQuery在编写中采用了AMD模块的方式，使用的是requirejs框架。</p>
+<p>模块开发带来的益处很多，特别对于我们来说源码的阅读更加方便明了。</p>
+<h3 id="Jquery主页结构"><a href="#Jquery主页结构" class="headerlink" title="Jquery主页结构"></a>Jquery主页结构</h3><figure class="highlight coffeescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">jquery/ -- 项目主目录</div><div class="line"> ├── bower_components/ -- bower依赖目录</div><div class="line"> ├── build/ -- 自定义任务目录</div><div class="line"> ├── dist/ -- 发布目录</div><div class="line"> ├── node_modules/ -- grunt 插件 录</div><div class="line"> ├── src/ -- 源码目录</div><div class="line"> ├── test/ -- 单元测试目录</div><div class="line"> ├── speed/ -- 速度测试目录</div><div class="line"> └── Gruntfile.coffee -- grunt配置文件</div></pre></td></tr></table></figure>
+                    
+                        <a href="/2013/10/31/jquery-learn-source-requirejs/" class="postShorten-excerpt_link link">
+                            阅读全文
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-right" itemscope itemType="http://schema.org/BlogPosting">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title" itemprop="headline">
+                    
+                        <a class="link-unstyled" href="/2013/10/30/jquery-learn-source-grunt/">
+                            jQuery源码学习(8)——优雅的grunt管理
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time itemprop="datePublished" datetime="2013-10-30T11:45:00+08:00">
+	
+		    10月 30, 2013
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-excerpt" itemprop="articleBody">
+                    <p>jQuery是采用grunt来管理其项目。</p>
+<p>它在grunt中定义了单元测试、代码检查、压缩、自定义模块打包等等。</p>
+<p>如果你不熟悉grunt可以参考官网教程<a href="http://gruntjs.com/">grunt</a>或者本人的另一博客<a href="!--￼0--">grunt 简易教程</a>。</p>
+                    
+                        <a href="/2013/10/30/jquery-learn-source-grunt/" class="postShorten-excerpt_link link">
+                            阅读全文
+                        </a>
+                        
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    <div class="pagination-bar">
+    <ul class="pagination">
+        
+        
+        <li class="pagination-number">第 1 页 共 1 页</li>
+    </ul>
+</div>
+
+</section>
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2016 Javy Liu. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <h4 id="about-card-name">Javy Liu</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                beijing
+            </div>
+        
+    </div>
+</div>
+
+        <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-close"></i></span>
+            <a href="https://algolia.com" target="_blank" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    autofocus="autofocus"/>
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/05/25/video-post/">
+                            <h3 class="media-heading">带有视频的文章</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年5月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/08/16/linux-command-common/">
+                            <h3 class="media-heading">linux 命令之常用命令</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年8月16日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>linux是一个强大的系统，但是因为其图形接口不是那么的强大，使用起来有那么些难上手。但是看见其完善的文字接口，<br>又倍感强大。</p>
+<h3 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h3><p>基于ubuntu-13.04-server-amd64，我使用的是virtualbox虚拟机来练习。</p>
+<h3 id="命令说明"><a href="#命令说明" class="headerlink" title="命令说明"></a>命令说明</h3><p> 通常在明白一个命令是做什么的时候就基本上掌握了该命令的使用了，什么参数的细节使用<code>-h</code>或者<code>--h</code>来查看。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/08/17/linux-command-user-manager/">
+                            <h3 class="media-heading">linux 命令之用户管理</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年8月17日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>linux命令随便练练。</p>
+<h3 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h3><p>基于ubuntu-13.04-server-amd64，我使用的是virtualbox虚拟机来练习。</p>
+<h3 id="命令说明"><a href="#命令说明" class="headerlink" title="命令说明"></a>命令说明</h3><p> 通常在明白一个命令是做什么的时候就基本上掌握了该命令的使用了，什么参数的细节使用<code>-h</code>或者<code>--h</code>来查看。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/08/20/grunt-intro/">
+                            <h3 class="media-heading">grunt 简易教程</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年8月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>越来越多的前端开源项目采用grunt来构建或者管理其项目。Grunt是一个自动化的项目构建工具。如果你需要重复的执行像压缩，编译，单元测试，代码检查以及打包发布的任务。那么你可以使用Grunt来处理这些任务，你所需要做的只是配置好Grunt，这样能很大程度的简化你的工作。而且grunt是基于nodejs、采用javascript的语法，学习使用非常的方便。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/08/20/javascript-create-object/">
+                            <h3 class="media-heading">JavaScript——创建对象方式</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年8月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>javascript对象可以有很多方式来创建。用构造函数或者字面量等。多种的方法构造对象，如何使用，<br>才能减少大量重复的代码？</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://www.programcreek.com/2012/12/%E9%9D%A2%E8%AF%9510%E5%A4%A7%E7%AE%97%E6%B3%95%E6%B1%87%E6%80%BB%EF%BC%8B%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE%E8%A7%A3%E7%AD%94/">
+                            <h3 class="media-heading">面试10大算法汇总＋常见题目解答</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                            <h3 class="media-heading">Java—— equals 和 hashCode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年9月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>我经常听到很多地方和教程中说，每当重写equals()方法，我需要重写hashCode（）方法。但是，原因是什么？</p>
+<p>equals()是定义在Object的一个方。在Java中，有两种类型的比较。一种方法是使用 “==” 操作符，<br>另一种就是“equals()” 。这两者之间的差异相信大家都知道， “equals()”是指等价关系。<br>在广义上说两个对象是相等的，他们满足的是“equals()”条件。</p>
+<p>hashCode()是定义在Object的一个native方法，默认实现基本上是对象提供来自内存地址映射到一个整数的值。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/09/10/javascript-qunit/">
+                            <h3 class="media-heading">javascript单元测试Qunit</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年9月10日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>QUnit是用来测试javascript真确性的，是一个简单强大的单元测试框架。如果你已经熟悉javascript，那么上手QUnit的难度几乎为0。</p>
+<p>QUnit编写测试非常的简简明了。</p>
+<p>测试函数：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">test(<span class="string">'测试名称'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line"> 	<span class="comment">// 代码</span></div><div class="line"> &#125;);</div></pre></td></tr></table></figure></p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://christianalfoni.github.io/javascript/2014/08/20/react-js-and-flux.html">
+                            <h3 class="media-heading">React JS and FLUX</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年9月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/10/27/javascript-prototype-chaining/">
+                            <h3 class="media-heading">JavaScript——原型</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年10月27日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>当我第一次开始学习JavaScript对象模型，我的感觉就是好深奥啊，好难懂啊。我完全不解其prototype的性质，因为javascript是我第一次遇到的一个基于原型的语言。我不知道JavaScript有一个独特的prototype的作用，构造函数的概念。我相信，许多人都有过类似的经验。</p>
+<p>在开发中，javascript使用是非常频繁的，只是简单的学习远远达不到理解的目的，必须渐渐深入它，也行你也会像我一样突然发现自己喜欢上了这样的方式。JavaScript是一门优雅和灵活性的原型语言。基于原型的语言有着更简单，更灵活的对象模型。</p>
+<h3 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h3><p>在javascript中每个对象都有一个prototype，实例化的javascript对象都有一个<strong>proto</strong>，如下面代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Person = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person();</div><div class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person();</div><div class="line"><span class="built_in">console</span>.log(Person.prototype);<span class="comment">//object</span></div><div class="line"><span class="built_in">console</span>.log(person1.__proto__);<span class="comment">//object 注：有的浏览器不支持直接读取内部原型。</span></div><div class="line"><span class="built_in">console</span>.log(person2.__proto__);<span class="comment">//object</span></div></pre></td></tr></table></figure></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 76 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-mc49sacc81i9hmfymykkr3ia36qschg0gjokhkj0t6vsshiaui0kgccn8naq.min.js"></script>
+<!--SCRIPTS END-->
+
+
+
+    </body>
+</html>

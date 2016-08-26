@@ -1,0 +1,737 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Javy">
+    <title>Java—— equals 和 hashCode - Javy</title>
+    <meta name="author" content="Javy Liu">
+    
+        <meta name="keywords" content="java,架构,javy,">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <meta name="description" content="我经常听到很多地方和教程中说，每当重写equals()方法，我需要重写hashCode（）方法。但是，原因是什么？
+equals()是定义在Object的一个方。在Java中，有两种类型的比较。一种方法是使用 “==” 操作符，另一种就是“equals()” 。这两者之间的差异相信大家都知道， “equals()”是指等价关系。在广义上说两个对象是相等的，他们满足的是“equals()”条件。
+h">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Java—— equals 和 hashCode">
+<meta property="og:url" content="http://yoursite.com/2013/09/03/java-equals-hashcode/index.html">
+<meta property="og:site_name" content="Javy">
+<meta property="og:description" content="我经常听到很多地方和教程中说，每当重写equals()方法，我需要重写hashCode（）方法。但是，原因是什么？
+equals()是定义在Object的一个方。在Java中，有两种类型的比较。一种方法是使用 “==” 操作符，另一种就是“equals()” 。这两者之间的差异相信大家都知道， “equals()”是指等价关系。在广义上说两个对象是相等的，他们满足的是“equals()”条件。
+h">
+<meta property="og:updated_time" content="2015-08-02T05:55:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Java—— equals 和 hashCode">
+<meta name="twitter:description" content="我经常听到很多地方和教程中说，每当重写equals()方法，我需要重写hashCode（）方法。但是，原因是什么？
+equals()是定义在Object的一个方。在Java中，有两种类型的比较。一种方法是使用 “==” 操作符，另一种就是“equals()” 。这两者之间的差异相信大家都知道， “equals()”是指等价关系。在广义上说两个对象是相等的，他们满足的是“equals()”条件。
+h">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-k4xay3guonbq17i5ncptfwd7qit65f9ej8kvs1xmyz03qkjtvgsaixieetui.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-83145813-1']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+    
+    <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?1ada6b8f9835dd208260a883c6e2b083";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Javy</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link open-algolia-search"
+                             href="#search"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-search"></i>
+                        <span class="sidebar-button-desc">搜索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/atom.xml"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title" itemprop="headline">
+            Java—— equals 和 hashCode
+        </h1>
+    
+    <div class="post-meta">
+    <time itemprop="datePublished" datetime="2013-09-03T17:45:00+08:00">
+	
+		    9月 03, 2013
+    	
+    </time>
+    
+</div>
+
+</div>
+    
+    <div class="post-content markdown" itemprop="articleBody">
+        <div class="main-content-wrap">
+            <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><p>我经常听到很多地方和教程中说，每当重写equals()方法，我需要重写hashCode（）方法。但是，原因是什么？</p>
+<p>equals()是定义在Object的一个方。在Java中，有两种类型的比较。一种方法是使用 “==” 操作符，<br>另一种就是“equals()” 。这两者之间的差异相信大家都知道， “equals()”是指等价关系。<br>在广义上说两个对象是相等的，他们满足的是“equals()”条件。</p>
+<p>hashCode()是定义在Object的一个native方法，默认实现基本上是对象提供来自内存地址映射到一个整数的值。</p>
+<a id="more"></a>
+<p>源代码如下(截自jdk1.7 Object):</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Object</span> </span>&#123;</div><div class="line">	<span class="comment">// 省略</span></div><div class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object obj)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> (<span class="keyword">this</span> == obj);</div><div class="line">    &#125;</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">native</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span></span>;</div><div class="line">    <span class="comment">// 省略</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<!--more-->
+<h3 id="when-and-why-override-equals-ro-hashCode"><a href="#when-and-why-override-equals-ro-hashCode" class="headerlink" title="when and why override equals() ro hashCode()?"></a>when and why override equals() ro hashCode()?</h3><p>equals()与hashCode()具体关系是什么？什么时候应该重写equals() 和 hashCode()方法呢？有一个经验法则，<br>如果你要复写方法 equals() 和 hashCode() 之一，你就必须复写equals() 和 hashCode()，否则就是一种违反合同的行为。<br>(参考 Java doc)。</p>
+<p>下面代码展示了 equals() 和 hashCode() 的使用:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Person</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> String name;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</div><div class="line"></div><div class="line">	... 省略了构造函数、get和set。</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">equals</span><span class="params">(Object o)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (<span class="keyword">this</span> == o) <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        Person p = (Person)o;</div><div class="line">        <span class="comment">// 根据name判断是否相等</span></div><div class="line">        <span class="keyword">if</span>(name!=<span class="keyword">null</span>?!name.equals(p.name):p.name!=<span class="keyword">null</span>) <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="comment">// 直接使用age做为hash值</span></div><div class="line">        <span class="keyword">return</span> age;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</div><div class="line">        <span class="comment">// 创建了2个逻辑上是相等的对象</span></div><div class="line">        Person person1 = <span class="keyword">new</span> Person(<span class="string">"faith"</span>,<span class="number">32</span>);</div><div class="line">        Person person2 = <span class="keyword">new</span> Person(<span class="string">"faith"</span>,<span class="number">31</span>);</div><div class="line">        <span class="comment">// HashSet 是基于HashMap实现的</span></div><div class="line">        Set&lt;Person&gt; personSet = <span class="keyword">new</span> HashSet&lt;Person&gt;();</div><div class="line">        personSet.add(person1);</div><div class="line">        personSet.add(person2);</div><div class="line">        System.out.println(personSet.size());<span class="comment">//结果是2 </span></div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>结果是2，完全不满足set的特性，为什么呢？如果你了解hash的存储方式，你就会知道，在存储时候，先计算hash值<br>来索引的。</p>
+<p>hashCode()主要是和采用hash存储的集合(HashMap、HashSet、HashTable)有关系了，我们看一下以下代码(截自jdk1.7 HashMap)：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">public</span> V <span class="title">put</span><span class="params">(K key, V value)</span> </span>&#123;</div><div class="line">        <span class="keyword">if</span> (key == <span class="keyword">null</span>) <span class="comment">// key	值为null 采用putForNullKey()方法</span></div><div class="line">            <span class="keyword">return</span> putForNullKey(value);</div><div class="line">        <span class="keyword">int</span> hash = hash(key); <span class="comment">// 根据 key 的 keyCode 计算 Hash 值  </span></div><div class="line">        <span class="keyword">int</span> i = indexFor(hash, table.length);<span class="comment">//搜索指定 hash 值在对应 table 中的索引</span></div><div class="line">        <span class="comment">//如果 i 索引处的 Entry 不为 null，表明此处有 Entry，通过循环不断遍历得到元素  </span></div><div class="line">        <span class="keyword">for</span> (Entry&lt;K,V&gt; e = table[i]; e != <span class="keyword">null</span>; e = e.next) &#123;</div><div class="line">            Object k;</div><div class="line">            <span class="comment">// 找到指定 key 与需要放入的 key 相等  </span></div><div class="line">     		<span class="comment">// 通过hash 和 equals 判断</span></div><div class="line">            <span class="keyword">if</span> (e.hash == hash &amp;&amp; ((k = e.key) == key || key.equals(k))) &#123;</div><div class="line">                V oldValue = e.value;</div><div class="line">                e.value = value;</div><div class="line">                e.recordAccess(<span class="keyword">this</span>);</div><div class="line">                <span class="keyword">return</span> oldValue;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">		<span class="comment">// 如果 i 索引处的 Entry 为 null，表明此处还没有 Entry,直接将 key、value 添加到 i 索引处</span></div><div class="line">        modCount++;</div><div class="line">        addEntry(hash, key, value, i);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">null</span>;</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>根据代码发现 HashMap 采用 Hash 算法决定集合元素的存储位置，首先判断的就是 Hash 值，然后才是 equals 判断。<br>所以当 hash 值不同的时候，存储的时候就会判断那hash值的链中值是否相等。由于即使有相同对象采用 equals 判断的，<br>也会存储进去，以至于产生了不统一情况。所以当我们重写 equals 时候，紧接着就应该重写 hashCode。</p>
+<p>在 HashMap 中 hash 值是怎么计算的呢？看下面代码(截自jdk1.7 HashMap):<br><figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">final</span> <span class="keyword">int</span> <span class="title">hash</span><span class="params">(Object k)</span> </span>&#123;</div><div class="line">        <span class="keyword">int</span> h = <span class="number">0</span>;</div><div class="line">        <span class="comment">// 根据useAltHashing判断采哪种生成方式</span></div><div class="line">        <span class="keyword">if</span> (useAltHashing) &#123;</div><div class="line">            <span class="keyword">if</span> (k <span class="keyword">instanceof</span> String) &#123;</div><div class="line">                <span class="keyword">return</span> sun.misc.Hashing.stringHash32((String) k);</div><div class="line">            &#125;</div><div class="line">            h = hashSeed;</div><div class="line">        &#125;</div><div class="line">		<span class="comment">// 各种运算啊！主要是无符号右移和异或运算</span></div><div class="line">        h ^= k.hashCode();</div><div class="line"></div><div class="line">        h ^= (h &gt;&gt;&gt; <span class="number">20</span>) ^ (h &gt;&gt;&gt; <span class="number">12</span>);</div><div class="line">        <span class="keyword">return</span> h ^ (h &gt;&gt;&gt; <span class="number">7</span>) ^ (h &gt;&gt;&gt; <span class="number">4</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure></p>
+<p>如果类具有自己特有的“逻辑相等”概念，而且超类中没有覆盖equals以实现期望的行为，这时我们就需要覆盖equals方法。这通常适合于“值类(value class)”，比如Integer和Date。这样做了之后实例就可以满足映射表(map)的key或者set元素的预期行为(enum类型不用改写equals)。</p>
+<p>复写equals通用约定：</p>
+<ul>
+<li>自反性：对于非null的引用值x，x.equals(x)返回true，x.equals(null)返回false。</li>
+<li>对称性：对于任何的引用值x和y，如果y.equals(x)为true，那么x.equals(y)也为true。</li>
+<li>传递性：对于任何的引用值x、y和z，如果x.equals(y)为true，并且y.equals(z)为true，那么x.equals(z)也为true。</li>
+<li>一致性：对于任何的引用值x和y，如果equals比较的对象信息没有修改，无论x.equals(y)多少次都应该返回一致。</li>
+</ul>
+<p>如果源码你看过并且知道相关的hash知识，那不难理解这些约定。</p>
+<h3 id="计算hash值"><a href="#计算hash值" class="headerlink" title="计算hash值"></a>计算hash值</h3><p>为什么要研究证明计算hash值？因为一个好的hash通常是没有相同的hash值的。相同的hash值额外的冲突处理，这样会浪费<br>性能。</p>
+<p>一个简单方式:</p>
+<p>1.把某个非零常数值，例如17，保存在int变量result中；<br>2.对于对象中每一个关键域f（指equals方法中考虑的每一个域）：<br>3.boolean型，计算(f? 0 : 1);<br>4.byte,char,short型，计算(int);<br>5.long型，计算(int)(f ^ (f&gt;&gt;&gt;32));<br>6.float型，计算Float.floatToIntBits(afloat);<br>7.double型，计算Double.doubleToLongBits(adouble)得到一个long，再执行[2,3];<br>8.对象引用，递归调用它的hashCode方法;<br>9.数组域，对其中每个元素调用它的hashCode方法。<br>10.将上面计算得到的散列码保存到int变量c, 然后执行result=37*result+c;<br>11.返回result。</p>
+<p>还可以后续看是否有相同hash值，有的话找出原因，再改进。</p>
+<p>在java中String 用<code>31</code>来做hash计算,推荐使用：</p>
+<p>公式：<code>s[0]*31^(n-1) + s[1]*31^(n-2) + … + s[n-1]</code></p>
+<h4 id="为什么使用31？"><a href="#为什么使用31？" class="headerlink" title="为什么使用31？"></a>为什么使用31？</h4><p>31是个神奇的数字，因为任何数n * 31就可以被JVM优化为 (n &lt;&lt; 5) -n,移位和减法的操作效率要比乘法的操作效率高的多，对左移现在很多虚拟机里面都有做相关优化，并且31只占用5bits！</p>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul>
+<li>《effective java》第二版。</li>
+<li>《javadoc》1.7。</li>
+<li><a href="http://stackoverflow.com/questions/299304/why-does-javas-hashcode-in-string-use-31-as-a-multiplier" target="_blank" rel="external">why hashcode in string use 31</a></li>
+</ul>
+
+            
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/java/">java</a> <a class="tag tag--primary tag--small t-link" href="/tags/源码学习/">源码学习</a>
+
+            </div>
+        
+        <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/09/10/javascript-qunit/"  data-tooltip="javascript单元测试Qunit">
+                
+                    <i class="fa fa-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/09/02/top-10-algorithms-for-coding-interview/" data-tooltip="面试10大算法汇总＋常见题目解答">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions"  href="#btn-open-shareoptions">
+                <i class="fa fa-share-alt"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                <i class="fa fa-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </li>
+        
+            <li class="post-action">
+                <a class="post-action-btn btn btn--default" href="#ds-thread">
+                    <i class="fa fa-comment-o"></i>
+                </a>
+            </li>
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#">
+            
+                <i class="fa fa-list"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+            
+                <div id="ds-thread" class="ds-thread" data-thread-key="2013/09/03/java-equals-hashcode/"
+     data-title="Java—— equals 和 hashCode" data-url="http://yoursite.com/2013/09/03/java-equals-hashcode/">
+</div>
+
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2016 Javy Liu. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/09/10/javascript-qunit/"  data-tooltip="javascript单元测试Qunit">
+                
+                    <i class="fa fa-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/09/02/top-10-algorithms-for-coding-interview/" data-tooltip="面试10大算法汇总＋常见题目解答">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions"  href="#btn-open-shareoptions">
+                <i class="fa fa-share-alt"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                <i class="fa fa-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </li>
+        
+            <li class="post-action">
+                <a class="post-action-btn btn btn--default" href="#ds-thread">
+                    <i class="fa fa-comment-o"></i>
+                </a>
+            </li>
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#">
+            
+                <i class="fa fa-list"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <ul class="share-options">
+        <li class="share-option">
+            <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                <i class="fa fa-google-plus"></i><span>分享到 Google+</span>
+            </a>
+        </li>
+        <li class="share-option">
+            <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                <i class="fa fa-facebook-official"></i><span>分享到 Facebook</span>
+            </a>
+        </li>
+        <li class="share-option">
+            <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                <i class="fa fa-twitter"></i><span>分享到 Twitter</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <h4 id="about-card-name">Javy Liu</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                beijing
+            </div>
+        
+    </div>
+</div>
+
+        <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-close"></i></span>
+            <a href="https://algolia.com" target="_blank" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    autofocus="autofocus"/>
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/05/25/video-post/">
+                            <h3 class="media-heading">带有视频的文章</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年5月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/08/16/linux-command-common/">
+                            <h3 class="media-heading">linux 命令之常用命令</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年8月16日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>linux是一个强大的系统，但是因为其图形接口不是那么的强大，使用起来有那么些难上手。但是看见其完善的文字接口，<br>又倍感强大。</p>
+<h3 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h3><p>基于ubuntu-13.04-server-amd64，我使用的是virtualbox虚拟机来练习。</p>
+<h3 id="命令说明"><a href="#命令说明" class="headerlink" title="命令说明"></a>命令说明</h3><p> 通常在明白一个命令是做什么的时候就基本上掌握了该命令的使用了，什么参数的细节使用<code>-h</code>或者<code>--h</code>来查看。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/08/17/linux-command-user-manager/">
+                            <h3 class="media-heading">linux 命令之用户管理</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年8月17日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>linux命令随便练练。</p>
+<h3 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h3><p>基于ubuntu-13.04-server-amd64，我使用的是virtualbox虚拟机来练习。</p>
+<h3 id="命令说明"><a href="#命令说明" class="headerlink" title="命令说明"></a>命令说明</h3><p> 通常在明白一个命令是做什么的时候就基本上掌握了该命令的使用了，什么参数的细节使用<code>-h</code>或者<code>--h</code>来查看。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/08/20/grunt-intro/">
+                            <h3 class="media-heading">grunt 简易教程</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年8月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>越来越多的前端开源项目采用grunt来构建或者管理其项目。Grunt是一个自动化的项目构建工具。如果你需要重复的执行像压缩，编译，单元测试，代码检查以及打包发布的任务。那么你可以使用Grunt来处理这些任务，你所需要做的只是配置好Grunt，这样能很大程度的简化你的工作。而且grunt是基于nodejs、采用javascript的语法，学习使用非常的方便。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/08/20/javascript-create-object/">
+                            <h3 class="media-heading">JavaScript——创建对象方式</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年8月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>javascript对象可以有很多方式来创建。用构造函数或者字面量等。多种的方法构造对象，如何使用，<br>才能减少大量重复的代码？</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://www.programcreek.com/2012/12/%E9%9D%A2%E8%AF%9510%E5%A4%A7%E7%AE%97%E6%B3%95%E6%B1%87%E6%80%BB%EF%BC%8B%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE%E8%A7%A3%E7%AD%94/">
+                            <h3 class="media-heading">面试10大算法汇总＋常见题目解答</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                            <h3 class="media-heading">Java—— equals 和 hashCode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年9月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>我经常听到很多地方和教程中说，每当重写equals()方法，我需要重写hashCode（）方法。但是，原因是什么？</p>
+<p>equals()是定义在Object的一个方。在Java中，有两种类型的比较。一种方法是使用 “==” 操作符，<br>另一种就是“equals()” 。这两者之间的差异相信大家都知道， “equals()”是指等价关系。<br>在广义上说两个对象是相等的，他们满足的是“equals()”条件。</p>
+<p>hashCode()是定义在Object的一个native方法，默认实现基本上是对象提供来自内存地址映射到一个整数的值。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/09/10/javascript-qunit/">
+                            <h3 class="media-heading">javascript单元测试Qunit</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年9月10日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>QUnit是用来测试javascript真确性的，是一个简单强大的单元测试框架。如果你已经熟悉javascript，那么上手QUnit的难度几乎为0。</p>
+<p>QUnit编写测试非常的简简明了。</p>
+<p>测试函数：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">test(<span class="string">'测试名称'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line"> 	<span class="comment">// 代码</span></div><div class="line"> &#125;);</div></pre></td></tr></table></figure></p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://christianalfoni.github.io/javascript/2014/08/20/react-js-and-flux.html">
+                            <h3 class="media-heading">React JS and FLUX</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年9月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/10/27/javascript-prototype-chaining/">
+                            <h3 class="media-heading">JavaScript——原型</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年10月27日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>当我第一次开始学习JavaScript对象模型，我的感觉就是好深奥啊，好难懂啊。我完全不解其prototype的性质，因为javascript是我第一次遇到的一个基于原型的语言。我不知道JavaScript有一个独特的prototype的作用，构造函数的概念。我相信，许多人都有过类似的经验。</p>
+<p>在开发中，javascript使用是非常频繁的，只是简单的学习远远达不到理解的目的，必须渐渐深入它，也行你也会像我一样突然发现自己喜欢上了这样的方式。JavaScript是一门优雅和灵活性的原型语言。基于原型的语言有着更简单，更灵活的对象模型。</p>
+<h3 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h3><p>在javascript中每个对象都有一个prototype，实例化的javascript对象都有一个<strong>proto</strong>，如下面代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Person = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person();</div><div class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person();</div><div class="line"><span class="built_in">console</span>.log(Person.prototype);<span class="comment">//object</span></div><div class="line"><span class="built_in">console</span>.log(person1.__proto__);<span class="comment">//object 注：有的浏览器不支持直接读取内部原型。</span></div><div class="line"><span class="built_in">console</span>.log(person2.__proto__);<span class="comment">//object</span></div></pre></td></tr></table></figure></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 76 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-mc49sacc81i9hmfymykkr3ia36qschg0gjokhkj0t6vsshiaui0kgccn8naq.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script type="text/javascript">
+            var duoshuoQuery = {short_name:'javy'};
+            (function() {
+                var ds = document.createElement('script');
+                ds.type = 'text/javascript';ds.async = true;
+                ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                ds.charset = 'UTF-8';
+                (document.getElementsByTagName('head')[0]
+                || document.getElementsByTagName('body')[0]).appendChild(ds);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>

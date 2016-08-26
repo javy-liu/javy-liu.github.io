@@ -1,0 +1,742 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+    
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Javy">
+    <title>jQuery源码学习(8)——selector模块 - Javy</title>
+    <meta name="author" content="Javy Liu">
+    
+        <meta name="keywords" content="java,架构,javy,">
+    
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <meta name="description" content="selector是jQuery主打的一个模块，可以说jQuery的强大就是其selector。目前其的selector已经分成另外的一个(sizzle)[]项目了。
+在jQuery中采用调用sizzle来实现selector，接下来详细分析。
+模块结构jQuery的selector模块依赖如下：
+selector -&amp;gt; selector-sizzle -&amp;gt; sizzle
+主要实现是si">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="jQuery源码学习(8)——selector模块">
+<meta property="og:url" content="http://yoursite.com/2013/11/25/jquery-learn-source-selector/index.html">
+<meta property="og:site_name" content="Javy">
+<meta property="og:description" content="selector是jQuery主打的一个模块，可以说jQuery的强大就是其selector。目前其的selector已经分成另外的一个(sizzle)[]项目了。
+在jQuery中采用调用sizzle来实现selector，接下来详细分析。
+模块结构jQuery的selector模块依赖如下：
+selector -&amp;gt; selector-sizzle -&amp;gt; sizzle
+主要实现是si">
+<meta property="og:updated_time" content="2015-08-02T04:54:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jQuery源码学习(8)——selector模块">
+<meta name="twitter:description" content="selector是jQuery主打的一个模块，可以说jQuery的强大就是其selector。目前其的selector已经分成另外的一个(sizzle)[]项目了。
+在jQuery中采用调用sizzle来实现selector，接下来详细分析。
+模块结构jQuery的selector模块依赖如下：
+selector -&amp;gt; selector-sizzle -&amp;gt; sizzle
+主要实现是si">
+    
+    
+        
+    
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-k4xay3guonbq17i5ncptfwd7qit65f9ej8kvs1xmyz03qkjtvgsaixieetui.min.css">
+    <!--STYLES END-->
+    
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-83145813-1']);
+        _gaq.push(['_trackPageview']);
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
+
+    
+    <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//hm.baidu.com/hm.js?1ada6b8f9835dd208260a883c6e2b083";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+    </script>
+
+</head>
+
+    <body>
+        <div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Javy</a>
+    </div>
+    
+        
+            <a  class="header-right-picture "
+                href="#about">
+        
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/ "
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-categories"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-tags"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/all-archives"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link open-algolia-search"
+                             href="#search"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-search"></i>
+                        <span class="sidebar-button-desc">搜索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="#about"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank">
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-github"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a  class="sidebar-button-link "
+                             href="/atom.xml"
+                            
+                        >
+                    
+                        <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post" itemscope itemType="http://schema.org/BlogPosting">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title" itemprop="headline">
+            jQuery源码学习(8)——selector模块
+        </h1>
+    
+    <div class="post-meta">
+    <time itemprop="datePublished" datetime="2013-11-25T12:45:00+08:00">
+	
+		    11月 25, 2013
+    	
+    </time>
+    
+</div>
+
+</div>
+    
+    <div class="post-content markdown" itemprop="articleBody">
+        <div class="main-content-wrap">
+            <script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><p>selector是jQuery主打的一个模块，可以说jQuery的强大就是其selector。目前其的selector已经分成另外的一个(sizzle)[]项目了。</p>
+<p>在jQuery中采用调用sizzle来实现selector，接下来详细分析。</p>
+<h3 id="模块结构"><a href="#模块结构" class="headerlink" title="模块结构"></a>模块结构</h3><p>jQuery的selector模块依赖如下：</p>
+<pre><code>selector -&gt; selector-sizzle -&gt; sizzle
+</code></pre><p>主要实现是sizzle。selector-sizzle只是定义了一些jQuery常用的sizzle的变量。selector直接就是一个申明依赖。<br><a id="more"></a></p>
+<h3 id="Sizzle简介"><a href="#Sizzle简介" class="headerlink" title="Sizzle简介"></a>Sizzle简介</h3><p>Sizzle也是采用类似jQuery结构的写法，但是其并未采用模块化编写。</p>
+<p>在官方文档中申明支持如下浏览器：</p>
+<ul>
+<li>IE6+</li>
+<li>FF3.0+</li>
+<li>Chrome 5+</li>
+<li>Safari 3+</li>
+<li>Opera 9+</li>
+</ul>
+<p>可以说主流的浏览器都主持。</p>
+<p>sizzle听说是业界中世界最快类库。其很多方法采用原生支持的，然后按照结构优化进行解析。</p>
+<p>sizzle常规解析是由右向左解析，例如：<code>ul li a</code>中sizzle是选择a,然后再a的候选集中剔除不满足li、ul的。这样做的好处是只遍历了一次文档，然后都是指针操作。</p>
+<p>工厂方法:<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/**</span></div><div class="line"> * Sizzle工厂方法</div><div class="line"> * @param &#123;[type]&#125; selector css 选择字符串</div><div class="line"> * @param &#123;[type]&#125; context  上下文 默认是当前文档</div><div class="line"> * @param &#123;[type]&#125; results  结果对象  匹配结果会添加在其中</div><div class="line"> * @param &#123;[type]&#125; seed     候选结果集</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Sizzle</span>(<span class="params"> selector, context, results, seed </span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> match, elem, m, nodeType,</div><div class="line">		<span class="comment">// QSA vars</span></div><div class="line">		i, groups, old, nid, newContext, newSelector;</div><div class="line"></div><div class="line">	<span class="comment">// 如果指定了context 那么其值为指定context的ownerDocument  否则采用preferredDoc(window.documrnt)</span></div><div class="line">	<span class="keyword">if</span> ( ( context ? context.ownerDocument || context : preferredDoc ) !== <span class="built_in">document</span> ) &#123;</div><div class="line">		<span class="comment">// 设置上下文  这个方法会进行文档判断</span></div><div class="line">		setDocument( context );</div><div class="line">	&#125;</div><div class="line">	context = context || <span class="built_in">document</span>;</div><div class="line">	results = results || [];</div><div class="line">	<span class="comment">// 选择器不是string 直接返回结果</span></div><div class="line">	<span class="keyword">if</span> ( !selector || <span class="keyword">typeof</span> selector !== <span class="string">"string"</span> ) &#123;</div><div class="line">		<span class="keyword">return</span> results;</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 如果的context.nodeType不是document或者html元素名 返回空结果</span></div><div class="line">	<span class="keyword">if</span> ( (nodeType = context.nodeType) !== <span class="number">1</span> &amp;&amp; nodeType !== <span class="number">9</span> ) &#123;</div><div class="line">		<span class="keyword">return</span> [];</div><div class="line">	&#125;</div><div class="line">	<span class="comment">// 是html文档  并且没有候选结果集</span></div><div class="line">	<span class="keyword">if</span> ( documentIsHTML &amp;&amp; !seed ) &#123;</div><div class="line"></div><div class="line">		<span class="comment">// 匹配是否是id、class或者tag  单节点</span></div><div class="line">		<span class="keyword">if</span> ( (match = rquickExpr.exec( selector )) ) &#123;</div><div class="line"></div><div class="line">			<span class="comment">// #id的情况</span></div><div class="line">			<span class="keyword">if</span> ( (m = match[<span class="number">1</span>]) ) &#123;</div><div class="line">				<span class="comment">// 如果是document</span></div><div class="line">				<span class="keyword">if</span> ( nodeType === <span class="number">9</span> ) &#123;</div><div class="line">					<span class="comment">// 使用getElementById获取节点</span></div><div class="line">					elem = context.getElementById( m );</div><div class="line">					<span class="comment">// 检查父节点来捕获 Blackberry 4.6 的返回结果</span></div><div class="line">					<span class="keyword">if</span> ( elem &amp;&amp; elem.parentNode ) &#123;</div><div class="line">						<span class="comment">// 处理当 IE、 Opera和 Webkit 等的返回结果</span></div><div class="line">						<span class="comment">// 确保id属性的确是需要的</span></div><div class="line">						<span class="keyword">if</span> ( elem.id === m ) &#123;</div><div class="line">							<span class="comment">// 增加如结果集</span></div><div class="line">							results.push( elem );</div><div class="line">							<span class="keyword">return</span> results;</div><div class="line">						&#125;</div><div class="line">					<span class="comment">// 节点并未在文档中</span></div><div class="line">					&#125; <span class="keyword">else</span> &#123;</div><div class="line">						<span class="comment">// 直接返回结果</span></div><div class="line">						<span class="keyword">return</span> results;</div><div class="line">					&#125;</div><div class="line">				<span class="comment">// 上下文是非文档</span></div><div class="line">				&#125; <span class="keyword">else</span> &#123;</div><div class="line">					<span class="comment">// 判断上下文是否有所属文档 如果有使用其的getElementById的方法</span></div><div class="line">					<span class="keyword">if</span> ( context.ownerDocument &amp;&amp; (elem = context.ownerDocument.getElementById( m )) &amp;&amp;</div><div class="line">						contains( context, elem ) &amp;&amp; elem.id === m ) &#123;</div><div class="line">						results.push( elem );</div><div class="line">						<span class="keyword">return</span> results;</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line"></div><div class="line">			<span class="comment">// tag情况</span></div><div class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> ( match[<span class="number">2</span>] ) &#123;</div><div class="line">				<span class="comment">// 直接调用context的getElementsByTagName</span></div><div class="line">				push.apply( results, context.getElementsByTagName( selector ) );</div><div class="line">				<span class="keyword">return</span> results;</div><div class="line"></div><div class="line">			<span class="comment">// .class情况</span></div><div class="line">			<span class="comment">// 在支持getElementsByClassName方法时使用getElementsByClassName否则使用sizzle扩展的</span></div><div class="line">			&#125; <span class="keyword">else</span> <span class="keyword">if</span> ( (m = match[<span class="number">3</span>]) &amp;&amp; support.getElementsByClassName &amp;&amp; context.getElementsByClassName ) &#123;</div><div class="line">				push.apply( results, context.getElementsByClassName( m ) );</div><div class="line">				<span class="keyword">return</span> results;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="built_in">console</span>.log(<span class="string">'----2222---'</span>);</div><div class="line">		<span class="built_in">console</span>.log(support.qsa);</div><div class="line">		<span class="built_in">console</span>.log(rbuggyQSA.test( selector ));</div><div class="line">		<span class="comment">// QSA path</span></div><div class="line">		<span class="comment">// 检查是否支持querySelectorAll 并且检测是否有bug  主要是IE8/9</span></div><div class="line">		<span class="keyword">if</span> ( support.qsa &amp;&amp; (!rbuggyQSA || !rbuggyQSA.test( selector )) ) &#123;</div><div class="line">			nid = old = expando;</div><div class="line">			newContext = context;</div><div class="line">			newSelector = nodeType === <span class="number">9</span> &amp;&amp; selector;</div><div class="line"></div><div class="line">			<span class="comment">// 上下文环境是tag并且是非object</span></div><div class="line">			<span class="comment">// IE 8 不支持 object elements</span></div><div class="line">			<span class="keyword">if</span> ( nodeType === <span class="number">1</span> &amp;&amp; context.nodeName.toLowerCase() !== <span class="string">"object"</span> ) &#123;</div><div class="line">				<span class="comment">// 组合选择字符串</span></div><div class="line">				groups = tokenize( selector );</div><div class="line">				<span class="comment">// 有id获取</span></div><div class="line">				<span class="keyword">if</span> ( (old = context.getAttribute(<span class="string">"id"</span>)) ) &#123;</div><div class="line">					<span class="comment">// 特殊字符转义</span></div><div class="line">					nid = old.replace( rescape, <span class="string">"\\$&amp;"</span> );</div><div class="line">				<span class="comment">// 无id设置id</span></div><div class="line">				&#125; <span class="keyword">else</span> &#123;</div><div class="line">					context.setAttribute( <span class="string">"id"</span>, nid );</div><div class="line">				&#125;</div><div class="line">				nid = <span class="string">"[id='"</span> + nid + <span class="string">"'] "</span>;</div><div class="line">				i = groups.length;</div><div class="line">				<span class="keyword">while</span> ( i-- ) &#123;</div><div class="line">					groups[i] = nid + toSelector( groups[i] );</div><div class="line">				&#125;</div><div class="line">				newContext = rsibling.test( selector ) &amp;&amp; testContext( context.parentNode ) || context;</div><div class="line">				newSelector = groups.join(<span class="string">","</span>);</div><div class="line">			&#125;</div><div class="line">			<span class="comment">// 如果存在newSelector</span></div><div class="line">			<span class="keyword">if</span> ( newSelector ) &#123;</div><div class="line">				<span class="keyword">try</span> &#123;</div><div class="line">					<span class="comment">// 直接调用原生的querySelectorAll方法</span></div><div class="line">					push.apply( results,</div><div class="line">						newContext.querySelectorAll( newSelector )</div><div class="line">					);</div><div class="line">					<span class="keyword">return</span> results;</div><div class="line">				&#125; <span class="keyword">catch</span>(qsaError) &#123;</div><div class="line">				&#125; <span class="keyword">finally</span> &#123;</div><div class="line">					<span class="keyword">if</span> ( !old ) &#123;</div><div class="line">						context.removeAttribute(<span class="string">"id"</span>);</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="comment">// 别的情况采用select方法 &lt;IE 10</span></div><div class="line">	<span class="keyword">return</span> select( selector.replace( rtrim, <span class="string">"$1"</span> ), context, results, seed );</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>根据工厂方法来分析，sizzle首先会采用原生方法判断，如果支持原生方法会直接采用原生方法实现。只有当浏览器不支持原生方法时候才采用自定义的方法(select)实现。</p>
+<p>其中关键的是检测相关方法是否原生支持，主要有support.getElementsByClassName、support.qsa。还有就是bug列表rbuggyQSA和自定义选择方法select了。</p>
+<p>采用querySelectorAll是否会有一个问题，比如当指定context的时候查找应该是不包含本身的，可以querySelectorAll确是包含的，以至于产生了一个问题。Sizzle采用querySelectorAll时候，如果上下文是html的tag时候，自己会构造一个id然后作为上下文然后转化为上下文为document进行查找，最后删除这个id。这样有效的排除的这个问题。</p>
+<p>还有Sizzle是如何保证速度的呢？不难看出一个条件(id、class、tag)的时候采用原生方法getElementById、getElementsByClassName、getElementById。多条件的时候基于querySelectorAll。这些方法中有的在一些浏览器中依然有bug，Sizzle采用检测的方式来处理bug。根据bug产生情况，又可能有不同的调用。总的来说就是尽量采用原生方法，实在不行就才采用自定义的实现。</p>
+<h3 id="检测"><a href="#检测" class="headerlink" title="检测"></a>检测</h3><p>Sizzle的检测都是基于一个主函数，源码如下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">assert</span>(<span class="params"> fn </span>) </span>&#123;</div><div class="line">	<span class="comment">// 创建一个节点</span></div><div class="line">	<span class="keyword">var</span> div = <span class="built_in">document</span>.createElement(<span class="string">"div"</span>);</div><div class="line"></div><div class="line">	<span class="keyword">try</span> &#123;</div><div class="line">		<span class="comment">// 转换成布尔值</span></div><div class="line">		<span class="keyword">return</span> !!fn( div );</div><div class="line">	&#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">		<span class="keyword">return</span> <span class="literal">false</span>;</div><div class="line">	&#125; <span class="keyword">finally</span> &#123;</div><div class="line">		<span class="comment">// 根据父节点来删除检测的节点</span></div><div class="line">		<span class="keyword">if</span> ( div.parentNode ) &#123;</div><div class="line">			div.parentNode.removeChild( div );</div><div class="line">		&#125;</div><div class="line">		<span class="comment">// IE 中得清楚内存</span></div><div class="line">		<span class="comment">// IE低版本采用的垃圾是标记回收</span></div><div class="line">		div = <span class="literal">null</span>;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>看出检测节点都是document下的一个节点，在检测完成后会清除。</p>
+<p>接下来看一下getElementsByClassName的检测方法：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 检测是否有 getElementsByClassName 的原生支持</span></div><div class="line">	<span class="comment">// 并且实际验证</span></div><div class="line">	support.getElementsByClassName = rnative.test( doc.getElementsByClassName ) &amp;&amp; assert(<span class="function"><span class="keyword">function</span>(<span class="params"> div </span>) </span>&#123;</div><div class="line">		div.innerHTML = <span class="string">"&#123;% raw %&#125;&lt;div class='a'&gt;&lt;/div&gt;&lt;div class='a i'&gt;&lt;/div&gt;&#123;% endraw %&#125;"</span>;</div><div class="line"></div><div class="line">		<span class="comment">// Safari&lt;4</span></div><div class="line">		<span class="comment">// 缓存一个类</span></div><div class="line">		div.firstChild.className = <span class="string">"i"</span>;</div><div class="line">		<span class="comment">// Opera&lt;10</span></div><div class="line">		<span class="comment">// 会有找不到前置类的bug</span></div><div class="line">		<span class="keyword">return</span> div.getElementsByClassName(<span class="string">"i"</span>).length === <span class="number">2</span>;</div><div class="line">	&#125;);</div></pre></td></tr></table></figure></p>
+<p>直接使用了rnative变量(正则)来验证，然后进行实际调用验证。</p>
+<p>qsa方法也是一样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// querySelectorAll(:focus)当true时候返还false(Chrome 21)</span></div><div class="line">	<span class="comment">// 在IE8/9中当iframe的`document.activeElement` 可以访问时候，</span></div><div class="line">	<span class="comment">// 使用:focus时会产生错误</span></div><div class="line">	<span class="comment">// 详细请看 http://bugs.jquery.com/ticket/13378</span></div><div class="line">	rbuggyQSA = [];<span class="comment">// 记录querySelectorAll的bug</span></div><div class="line"></div><div class="line">	<span class="comment">// 调用rnative.test判断是否支持querySelectorAll方法</span></div><div class="line">	<span class="comment">// rnative是正则判断是否是原生实现的方法</span></div><div class="line">	<span class="keyword">if</span> ( (support.qsa = rnative.test( doc.querySelectorAll )) ) &#123;</div><div class="line">		<span class="comment">// 判断原生实现了还得进行实际验证</span></div><div class="line">		assert(<span class="function"><span class="keyword">function</span>(<span class="params"> div </span>) </span>&#123;</div><div class="line">			<span class="comment">// 设置一个select的属性 赋值为空</span></div><div class="line">			<span class="comment">// selected赋值bug 详细请看http://bugs.jquery.com/ticket/12359</span></div><div class="line">			div.innerHTML = <span class="string">"&lt;select&gt;&lt;option selected=''&gt;&lt;/option&gt;&lt;/select&gt;"</span>;</div><div class="line"></div><div class="line">			<span class="comment">// IE8</span></div><div class="line">			<span class="comment">// 根据属性查找不出节点</span></div><div class="line">			<span class="keyword">if</span> ( !div.querySelectorAll(<span class="string">"[selected]"</span>).length ) &#123;</div><div class="line">				<span class="comment">// 增加一个属性选择bug  </span></div><div class="line">				rbuggyQSA.push( <span class="string">"\\["</span> + whitespace + <span class="string">"*(?:value|"</span> + booleans + <span class="string">")"</span> );</div><div class="line">			&#125;</div><div class="line">			<span class="comment">// 在Webkit/Opera中:checked 返回的selected 是option属性</span></div><div class="line">			<span class="comment">// 但是IE8中却是抛出错误</span></div><div class="line">			<span class="comment">// http://www.w3.org/TR/2011/REC-css3-selectors-20110929/#checked</span></div><div class="line">			<span class="keyword">if</span> ( !div.querySelectorAll(<span class="string">":checked"</span>).length ) &#123;</div><div class="line">				rbuggyQSA.push(<span class="string">":checked"</span>);</div><div class="line">			&#125;</div><div class="line">		&#125;);</div><div class="line"></div><div class="line">		assert(<span class="function"><span class="keyword">function</span>(<span class="params"> div </span>) </span>&#123;</div><div class="line"></div><div class="line">			<span class="comment">//  Windows 8 Native Apps 中 使用.innerHTML时候type属性被限制</span></div><div class="line">			<span class="keyword">var</span> input = doc.createElement(<span class="string">"input"</span>);</div><div class="line">			input.setAttribute( <span class="string">"type"</span>, <span class="string">"hidden"</span> );</div><div class="line">			div.appendChild( input ).setAttribute( <span class="string">"t"</span>, <span class="string">""</span> );</div><div class="line"></div><div class="line">			<span class="comment">// 检测属性选择为空的情况</span></div><div class="line">			<span class="comment">// 在常规中空属性值会直接转化属性为如：id=''-&gt;id</span></div><div class="line">			<span class="comment">// 如果这样查询到值也是bug </span></div><div class="line">			<span class="comment">// IE8/Opera 10-12</span></div><div class="line">			<span class="keyword">if</span> ( div.querySelectorAll(<span class="string">"[t^='']"</span>).length ) &#123;</div><div class="line">				rbuggyQSA.push( <span class="string">"[*^$]="</span> + whitespace + <span class="string">"*(?:''|\"\")"</span> );				</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			<span class="comment">// 选择:enabled</span></div><div class="line">			<span class="comment">// IE8中抛异常  </span></div><div class="line">			<span class="comment">// FF 3.5 中隐藏元素一直是enabled</span></div><div class="line">			<span class="keyword">if</span> ( !div.querySelectorAll(<span class="string">":enabled"</span>).length ) &#123;</div><div class="line">				rbuggyQSA.push( <span class="string">":enabled"</span>, <span class="string">":disabled"</span> );</div><div class="line">			&#125;</div><div class="line"></div><div class="line">			</div><div class="line">			<span class="comment">// 正常中抛异常跳出函数块</span></div><div class="line">			<span class="comment">// Opera 10-11中不抛伪类前带有,号的异常</span></div><div class="line">			div.querySelectorAll(<span class="string">"*,:x"</span>);</div><div class="line">			rbuggyQSA.push(<span class="string">",.*:"</span>);</div><div class="line">		&#125;);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	...</div><div class="line">	<span class="comment">// querySelectorAll有bug  组合成为一个正则方便调用检测</span></div><div class="line">	rbuggyQSA = rbuggyQSA.length &amp;&amp; <span class="keyword">new</span> <span class="built_in">RegExp</span>( rbuggyQSA.join(<span class="string">"|"</span>) );</div></pre></td></tr></table></figure></p>
+<p>从中看出针对很多bug进行了检测，最后形成了一个正则，现在再看工厂方法中的<code>rbuggyQSA.test(selector)</code>是不是感觉豁然开朗。</p>
+<p>篇幅太长了，下一篇再接着分析吧。</p>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul>
+<li><a href="https://github.com/jquery/sizzle/wiki/Sizzle-Documentation" target="_blank" rel="external">Sizzle 文档</a></li>
+<li><a href="http://stackoverflow.com/questions/2503175/json-on-ie6-ie7" target="_blank" rel="external">IE JSON 问题</a></li>
+<li><a href="http://bugs.jquery.com/ticket/13378" target="_blank" rel="external">querySelectorAll 问题</a></li>
+<li><a href="http://www.456bereastreet.com/archive/200802/beware_of_id_and_name_attribute_mixups_when_using_getelementbyid_in_internet_explorer/" target="_blank" rel="external">IE id与name混淆 问题</a></li>
+</ul>
+
+            
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br/>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/javascript/">javascript</a> <a class="tag tag--primary tag--small t-link" href="/tags/jquery源码/">jquery源码</a>
+
+            </div>
+        
+        <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/01/14/read-make-friends-with-time/"  data-tooltip="读《和时间做朋友》有感">
+                
+                    <i class="fa fa-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/11/08/javascript-dom/" data-tooltip="javascript DOM 常规操作">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions"  href="#btn-open-shareoptions">
+                <i class="fa fa-share-alt"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2013/11/25/jquery-learn-source-selector/">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2013/11/25/jquery-learn-source-selector/">
+                <i class="fa fa-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2013/11/25/jquery-learn-source-selector/">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </li>
+        
+            <li class="post-action">
+                <a class="post-action-btn btn btn--default" href="#ds-thread">
+                    <i class="fa fa-comment-o"></i>
+                </a>
+            </li>
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#">
+            
+                <i class="fa fa-list"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+            
+                <div id="ds-thread" class="ds-thread" data-thread-key="2013/11/25/jquery-learn-source-selector/"
+     data-title="jQuery源码学习(8)——selector模块" data-url="http://yoursite.com/2013/11/25/jquery-learn-source-selector/">
+</div>
+
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2016 Javy Liu. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2014/01/14/read-make-friends-with-time/"  data-tooltip="读《和时间做朋友》有感">
+                
+                    <i class="fa fa-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2013/11/08/javascript-dom/" data-tooltip="javascript DOM 常规操作">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions"  href="#btn-open-shareoptions">
+                <i class="fa fa-share-alt"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2013/11/25/jquery-learn-source-selector/">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2013/11/25/jquery-learn-source-selector/">
+                <i class="fa fa-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2013/11/25/jquery-learn-source-selector/">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </li>
+        
+            <li class="post-action">
+                <a class="post-action-btn btn btn--default" href="#ds-thread">
+                    <i class="fa fa-comment-o"></i>
+                </a>
+            </li>
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#">
+            
+                <i class="fa fa-list"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+    <ul class="share-options">
+        <li class="share-option">
+            <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2013/11/25/jquery-learn-source-selector/">
+                <i class="fa fa-google-plus"></i><span>分享到 Google+</span>
+            </a>
+        </li>
+        <li class="share-option">
+            <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2013/11/25/jquery-learn-source-selector/">
+                <i class="fa fa-facebook-official"></i><span>分享到 Facebook</span>
+            </a>
+        </li>
+        <li class="share-option">
+            <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2013/11/25/jquery-learn-source-selector/">
+                <i class="fa fa-twitter"></i><span>分享到 Twitter</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
+
+            
+        </div>
+        
+
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-remove"></i>
+        </div>
+        
+            <h4 id="about-card-name">Javy Liu</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br/>
+                <p>author.job</p>
+
+            </div>
+        
+        
+            <div id="about-card-location">
+                <i class="fa fa-map-marker"></i>
+                <br/>
+                beijing
+            </div>
+        
+    </div>
+</div>
+
+        <div id="algolia-search-modal" class="modal-container">
+    <div class="modal">
+        <div class="modal-header">
+            <span class="close-button"><i class="fa fa-close"></i></span>
+            <a href="https://algolia.com" target="_blank" class="searchby-algolia text-color-light link-unstyled">
+                <span class="searchby-algolia-text text-color-light text-small">by</span>
+                <img class="searchby-algolia-logo" src="https://www.algolia.com/static_assets/images/press/downloads/algolia-light.svg">
+            </a>
+            <i class="search-icon fa fa-search"></i>
+            <form id="algolia-search-form">
+                <input type="text" id="algolia-search-input" name="search"
+                    class="form-control input--large search-input" placeholder="Search "
+                    autofocus="autofocus"/>
+            </form>
+        </div>
+        <div class="modal-body">
+            <div class="no-result text-color-light text-center">没有找到文章</div>
+            <div class="results">
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/05/25/video-post/">
+                            <h3 class="media-heading">带有视频的文章</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年5月25日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/08/16/linux-command-common/">
+                            <h3 class="media-heading">linux 命令之常用命令</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年8月16日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>linux是一个强大的系统，但是因为其图形接口不是那么的强大，使用起来有那么些难上手。但是看见其完善的文字接口，<br>又倍感强大。</p>
+<h3 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h3><p>基于ubuntu-13.04-server-amd64，我使用的是virtualbox虚拟机来练习。</p>
+<h3 id="命令说明"><a href="#命令说明" class="headerlink" title="命令说明"></a>命令说明</h3><p> 通常在明白一个命令是做什么的时候就基本上掌握了该命令的使用了，什么参数的细节使用<code>-h</code>或者<code>--h</code>来查看。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/08/17/linux-command-user-manager/">
+                            <h3 class="media-heading">linux 命令之用户管理</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年8月17日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>linux命令随便练练。</p>
+<h3 id="环境说明"><a href="#环境说明" class="headerlink" title="环境说明"></a>环境说明</h3><p>基于ubuntu-13.04-server-amd64，我使用的是virtualbox虚拟机来练习。</p>
+<h3 id="命令说明"><a href="#命令说明" class="headerlink" title="命令说明"></a>命令说明</h3><p> 通常在明白一个命令是做什么的时候就基本上掌握了该命令的使用了，什么参数的细节使用<code>-h</code>或者<code>--h</code>来查看。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/08/20/grunt-intro/">
+                            <h3 class="media-heading">grunt 简易教程</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年8月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>越来越多的前端开源项目采用grunt来构建或者管理其项目。Grunt是一个自动化的项目构建工具。如果你需要重复的执行像压缩，编译，单元测试，代码检查以及打包发布的任务。那么你可以使用Grunt来处理这些任务，你所需要做的只是配置好Grunt，这样能很大程度的简化你的工作。而且grunt是基于nodejs、采用javascript的语法，学习使用非常的方便。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/08/20/javascript-create-object/">
+                            <h3 class="media-heading">JavaScript——创建对象方式</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年8月20日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>javascript对象可以有很多方式来创建。用构造函数或者字面量等。多种的方法构造对象，如何使用，<br>才能减少大量重复的代码？</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://www.programcreek.com/2012/12/%E9%9D%A2%E8%AF%9510%E5%A4%A7%E7%AE%97%E6%B3%95%E6%B1%87%E6%80%BB%EF%BC%8B%E5%B8%B8%E8%A7%81%E9%A2%98%E7%9B%AE%E8%A7%A3%E7%AD%94/">
+                            <h3 class="media-heading">面试10大算法汇总＋常见题目解答</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年9月2日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/09/03/java-equals-hashcode/">
+                            <h3 class="media-heading">Java—— equals 和 hashCode</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年9月3日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>我经常听到很多地方和教程中说，每当重写equals()方法，我需要重写hashCode（）方法。但是，原因是什么？</p>
+<p>equals()是定义在Object的一个方。在Java中，有两种类型的比较。一种方法是使用 “==” 操作符，<br>另一种就是“equals()” 。这两者之间的差异相信大家都知道， “equals()”是指等价关系。<br>在广义上说两个对象是相等的，他们满足的是“equals()”条件。</p>
+<p>hashCode()是定义在Object的一个native方法，默认实现基本上是对象提供来自内存地址映射到一个整数的值。</p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/09/10/javascript-qunit/">
+                            <h3 class="media-heading">javascript单元测试Qunit</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年9月10日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>QUnit是用来测试javascript真确性的，是一个简单强大的单元测试框架。如果你已经熟悉javascript，那么上手QUnit的难度几乎为0。</p>
+<p>QUnit编写测试非常的简简明了。</p>
+<p>测试函数：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">test(<span class="string">'测试名称'</span>, <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line"> 	<span class="comment">// 代码</span></div><div class="line"> &#125;);</div></pre></td></tr></table></figure></p></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://christianalfoni.github.io/javascript/2014/08/20/react-js-and-flux.html">
+                            <h3 class="media-heading">React JS and FLUX</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年9月15日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+                <div class="media">
+                    
+                    <div class="media-body">
+                        <a class="link-unstyled" href="http://yoursite.com/2013/10/27/javascript-prototype-chaining/">
+                            <h3 class="media-heading">JavaScript——原型</h3>
+                        </a>
+                        <span class="media-meta">
+                            <span class="media-date text-small">
+                                
+                                    2013年10月27日
+                                
+                            </span>
+                        </span>
+                        <div class="media-content hide-xs font-merryweather"><p>当我第一次开始学习JavaScript对象模型，我的感觉就是好深奥啊，好难懂啊。我完全不解其prototype的性质，因为javascript是我第一次遇到的一个基于原型的语言。我不知道JavaScript有一个独特的prototype的作用，构造函数的概念。我相信，许多人都有过类似的经验。</p>
+<p>在开发中，javascript使用是非常频繁的，只是简单的学习远远达不到理解的目的，必须渐渐深入它，也行你也会像我一样突然发现自己喜欢上了这样的方式。JavaScript是一门优雅和灵活性的原型语言。基于原型的语言有着更简单，更灵活的对象模型。</p>
+<h3 id="原型"><a href="#原型" class="headerlink" title="原型"></a>原型</h3><p>在javascript中每个对象都有一个prototype，实例化的javascript对象都有一个<strong>proto</strong>，如下面代码：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Person = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;&#125;;</div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person();</div><div class="line"><span class="keyword">var</span> person2 = <span class="keyword">new</span> Person();</div><div class="line"><span class="built_in">console</span>.log(Person.prototype);<span class="comment">//object</span></div><div class="line"><span class="built_in">console</span>.log(person1.__proto__);<span class="comment">//object 注：有的浏览器不支持直接读取内部原型。</span></div><div class="line"><span class="built_in">console</span>.log(person2.__proto__);<span class="comment">//object</span></div></pre></td></tr></table></figure></div>
+                    </div>
+                    <div style="clear:both;"></div>
+                    <hr>
+                </div>
+                
+            </div>
+        </div>
+        <div class="modal-footer">
+            <p class="results-count text-medium"
+                data-message-zero="没有找到文章"
+                data-message-one="找到 1 篇文章"
+                data-message-other="找到 {n} 篇文章">
+                找到 76 篇文章
+            </p>
+        </div>
+    </div>
+</div>
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-mc49sacc81i9hmfymykkr3ia36qschg0gjokhkj0t6vsshiaui0kgccn8naq.min.js"></script>
+<!--SCRIPTS END-->
+
+    
+        <script type="text/javascript">
+            var duoshuoQuery = {short_name:'javy'};
+            (function() {
+                var ds = document.createElement('script');
+                ds.type = 'text/javascript';ds.async = true;
+                ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+                ds.charset = 'UTF-8';
+                (document.getElementsByTagName('head')[0]
+                || document.getElementsByTagName('body')[0]).appendChild(ds);
+            })();
+        </script>
+    
+
+
+
+    </body>
+</html>
