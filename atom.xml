@@ -651,6 +651,54 @@ black dog - 15
   </entry>
   
   <entry>
+    <title>在java中为什么字符串是不可变的</title>
+    <link href="http://blog.leeln.com/2014/09/28/why-string-is-immutable-in-java/"/>
+    <id>http://blog.leeln.com/2014/09/28/why-string-is-immutable-in-java/</id>
+    <published>2014-09-28T10:33:00.000Z</published>
+    <updated>2016-08-26T07:27:51.000Z</updated>
+    
+    <content type="html"><![CDATA[<script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><p>在Java中String是一个不可变类。不可变类是一个简单的类，它的实例不能被修改。创建实例的时候在一个实例中的所有信息被初始化并且信息不能被修改。不可变类有许多的优点。本文总结了为什么字符串被设计成不可变的。一个很好的答案是：取决于对内存，同步，数据结构等的深刻理解。</p>
+<a id="more"></a>
+<h3 id="1-字符串池的要求"><a href="#1-字符串池的要求" class="headerlink" title="1.字符串池的要求"></a>1.字符串池的要求</h3><p>String pool (String intern pool)在方法区是一种特殊的存储区域。当创建一个字符串，如果字符串已经存在于池中，现有字符串的引用将被退回，而不是创建一个新的对象，并返回它的引用。</p>
+<p>下面的代码将只创建一个字符串堆对象。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">String string1 = <span class="string">"abcd"</span>;</div><div class="line">String string2 = <span class="string">"abcd"</span>;</div></pre></td></tr></table></figure>
+<p>下图是它的运作方式：</p>
+<p><img src="/assets/images/java-string-pool.jpeg" alt="java 字符串池"></p>
+<p>如果字符串不是一成不变的，不断变化的字符串与一个参考值将导致对其他引用得到了错误的值。</p>
+<h3 id="2-缓存Hashcode"><a href="#2-缓存Hashcode" class="headerlink" title="2.缓存Hashcode"></a>2.缓存Hashcode</h3><p>在java中是经常使用hashcode的。例如，在一个HashMap中。不可改变保证了哈希码总是相同的，所以，它可以无需担心改变。这意味着，没有必要每次使都计算哈希码。这是更有效的方式。</p>
+<p>在String 类中, 它包括了下面的代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> hash;<span class="comment">//这是用来缓存哈希值的。</span></div></pre></td></tr></table></figure>
+<h3 id="3-协助其他对象的使用"><a href="#3-协助其他对象的使用" class="headerlink" title="3.协助其他对象的使用"></a>3.协助其他对象的使用</h3><p>为了使这个问题更加具体，看一下下面的代码：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">HashSet&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;String&gt;();</div><div class="line">set.add(<span class="keyword">new</span> String(<span class="string">"a"</span>));</div><div class="line">set.add(<span class="keyword">new</span> String(<span class="string">"b"</span>));</div><div class="line">set.add(<span class="keyword">new</span> String(<span class="string">"c"</span>));</div><div class="line"> </div><div class="line"><span class="keyword">for</span>(String a: set)</div><div class="line">	a.value = <span class="string">"a"</span>;</div></pre></td></tr></table></figure>
+<p>在这个例子中，如果字符串是可变的，它的值是可以改变这将违反set的设计（set集包含不重复的元素）。这个例子的目的是为了简单起见，在实际中String类是没有value 的域。</p>
+<h3 id="4-安全问题"><a href="#4-安全问题" class="headerlink" title="4. 安全问题"></a>4. 安全问题</h3><p>在java类中，字符串是被广泛地作为用参数，例如：网络连接，打开文件等等。如果字符串不是不变的，连接或文件将被改变，并导致严重的安全威胁。该方法还以为是连接到同一台机器，但实际上市没有。可变字符串可能会导致反射的安全问题也一样，这些参数都是字符串。</p>
+<p>下面是例子代码:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">connect</span><span class="params">(string s)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span> (!isSecure(s)) &#123; </div><div class="line"><span class="keyword">throw</span> <span class="keyword">new</span> SecurityException(); </div><div class="line">&#125;</div><div class="line">    <span class="comment">//这将引起问题, 如果s是可变的，别处s的引用改变s的值。    </span></div><div class="line">    causeProblem(s);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="5-不可变的对象通常是线程安全的"><a href="#5-不可变的对象通常是线程安全的" class="headerlink" title="5. 不可变的对象通常是线程安全的"></a>5. 不可变的对象通常是线程安全的</h3><p>由于不可变对象不能改变，就可以在多个线程之间自由共享。这消除了执行同步的要求。 </p>
+<p>总之，字符串被设计为不可变的，为了效率和安全性。这也是为什么一般情况下不可变的类是优选的。</p>
+<h3 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h3><ul>
+<li><a href="http://www.programcreek.com/2014/03/create-java-string-by-double-quotes-vs-by-constructor/" target="_blank" rel="external">Create Java String Using ” ” or Constructor?</a></li>
+<li><a href="http://www.programcreek.com/2009/02/diagram-to-show-java-strings-immutability/" target="_blank" rel="external">Diagram to show Java String’s Immutability</a></li>
+<li><a href="http://www.programcreek.com/2013/09/top-8-diagrams-for-understanding-java/" target="_blank" rel="external">Top 8 Diagrams for Understanding Java</a></li>
+<li><a href="(&lt;!--￼4--">Java字符串的十大问题</a>)</li>
+</ul>
+<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul>
+<li><a href="http://www.programcreek.com/2013/04/why-string-is-immutable-in-java/" target="_blank" rel="external">Why String is immutable in Java ?</a></li>
+</ul>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在Java中String是一个不可变类。不可变类是一个简单的类，它的实例不能被修改。创建实例的时候在一个实例中的所有信息被初始化并且信息不能被修改。不可变类有许多的优点。本文总结了为什么字符串被设计成不可变的。一个很好的答案是：取决于对内存，同步，数据结构等的深刻理解。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="java" scheme="http://blog.leeln.com/tags/java/"/>
+    
+  </entry>
+  
+  <entry>
     <title>ArrayList vs. LinkedList vs. Vector</title>
     <link href="http://blog.leeln.com/2014/09/28/arraylist-vs-linkedlist-vs-vector/"/>
     <id>http://blog.leeln.com/2014/09/28/arraylist-vs-linkedlist-vs-vector/</id>
@@ -702,54 +750,6 @@ LinkedList remove: 85768810
     <summary type="html">
     
       &lt;h3 id=&quot;1-List概念&quot;&gt;&lt;a href=&quot;#1-List概念&quot; class=&quot;headerlink&quot; title=&quot;1. List概念&quot;&gt;&lt;/a&gt;1. List概念&lt;/h3&gt;&lt;p&gt;List正如其名，是一个一组有序的元素。当我说List，最好比较一下。Set 中的元素是唯一、有序的。下图是集合的层次结构图，从中你可以了解到集合的概念。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="java" scheme="http://blog.leeln.com/tags/java/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>在java中为什么字符串是不可变的</title>
-    <link href="http://blog.leeln.com/2014/09/28/why-string-is-immutable-in-java/"/>
-    <id>http://blog.leeln.com/2014/09/28/why-string-is-immutable-in-java/</id>
-    <published>2014-09-28T10:33:00.000Z</published>
-    <updated>2016-08-26T07:27:51.000Z</updated>
-    
-    <content type="html"><![CDATA[<script src="/assets/js/DPlayer.min.js"> </script><script src="/assets/js/APlayer.min.js"> </script><p>在Java中String是一个不可变类。不可变类是一个简单的类，它的实例不能被修改。创建实例的时候在一个实例中的所有信息被初始化并且信息不能被修改。不可变类有许多的优点。本文总结了为什么字符串被设计成不可变的。一个很好的答案是：取决于对内存，同步，数据结构等的深刻理解。</p>
-<a id="more"></a>
-<h3 id="1-字符串池的要求"><a href="#1-字符串池的要求" class="headerlink" title="1.字符串池的要求"></a>1.字符串池的要求</h3><p>String pool (String intern pool)在方法区是一种特殊的存储区域。当创建一个字符串，如果字符串已经存在于池中，现有字符串的引用将被退回，而不是创建一个新的对象，并返回它的引用。</p>
-<p>下面的代码将只创建一个字符串堆对象。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">String string1 = <span class="string">"abcd"</span>;</div><div class="line">String string2 = <span class="string">"abcd"</span>;</div></pre></td></tr></table></figure>
-<p>下图是它的运作方式：</p>
-<p><img src="/assets/images/java-string-pool.jpeg" alt="java 字符串池"></p>
-<p>如果字符串不是一成不变的，不断变化的字符串与一个参考值将导致对其他引用得到了错误的值。</p>
-<h3 id="2-缓存Hashcode"><a href="#2-缓存Hashcode" class="headerlink" title="2.缓存Hashcode"></a>2.缓存Hashcode</h3><p>在java中是经常使用hashcode的。例如，在一个HashMap中。不可改变保证了哈希码总是相同的，所以，它可以无需担心改变。这意味着，没有必要每次使都计算哈希码。这是更有效的方式。</p>
-<p>在String 类中, 它包括了下面的代码:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">private</span> <span class="keyword">int</span> hash;<span class="comment">//这是用来缓存哈希值的。</span></div></pre></td></tr></table></figure>
-<h3 id="3-协助其他对象的使用"><a href="#3-协助其他对象的使用" class="headerlink" title="3.协助其他对象的使用"></a>3.协助其他对象的使用</h3><p>为了使这个问题更加具体，看一下下面的代码：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">HashSet&lt;String&gt; set = <span class="keyword">new</span> HashSet&lt;String&gt;();</div><div class="line">set.add(<span class="keyword">new</span> String(<span class="string">"a"</span>));</div><div class="line">set.add(<span class="keyword">new</span> String(<span class="string">"b"</span>));</div><div class="line">set.add(<span class="keyword">new</span> String(<span class="string">"c"</span>));</div><div class="line"> </div><div class="line"><span class="keyword">for</span>(String a: set)</div><div class="line">	a.value = <span class="string">"a"</span>;</div></pre></td></tr></table></figure>
-<p>在这个例子中，如果字符串是可变的，它的值是可以改变这将违反set的设计（set集包含不重复的元素）。这个例子的目的是为了简单起见，在实际中String类是没有value 的域。</p>
-<h3 id="4-安全问题"><a href="#4-安全问题" class="headerlink" title="4. 安全问题"></a>4. 安全问题</h3><p>在java类中，字符串是被广泛地作为用参数，例如：网络连接，打开文件等等。如果字符串不是不变的，连接或文件将被改变，并导致严重的安全威胁。该方法还以为是连接到同一台机器，但实际上市没有。可变字符串可能会导致反射的安全问题也一样，这些参数都是字符串。</p>
-<p>下面是例子代码:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">boolean</span> <span class="title">connect</span><span class="params">(string s)</span></span>&#123;</div><div class="line">    <span class="keyword">if</span> (!isSecure(s)) &#123; </div><div class="line"><span class="keyword">throw</span> <span class="keyword">new</span> SecurityException(); </div><div class="line">&#125;</div><div class="line">    <span class="comment">//这将引起问题, 如果s是可变的，别处s的引用改变s的值。    </span></div><div class="line">    causeProblem(s);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="5-不可变的对象通常是线程安全的"><a href="#5-不可变的对象通常是线程安全的" class="headerlink" title="5. 不可变的对象通常是线程安全的"></a>5. 不可变的对象通常是线程安全的</h3><p>由于不可变对象不能改变，就可以在多个线程之间自由共享。这消除了执行同步的要求。 </p>
-<p>总之，字符串被设计为不可变的，为了效率和安全性。这也是为什么一般情况下不可变的类是优选的。</p>
-<h3 id="延伸阅读"><a href="#延伸阅读" class="headerlink" title="延伸阅读"></a>延伸阅读</h3><ul>
-<li><a href="http://www.programcreek.com/2014/03/create-java-string-by-double-quotes-vs-by-constructor/" target="_blank" rel="external">Create Java String Using ” ” or Constructor?</a></li>
-<li><a href="http://www.programcreek.com/2009/02/diagram-to-show-java-strings-immutability/" target="_blank" rel="external">Diagram to show Java String’s Immutability</a></li>
-<li><a href="http://www.programcreek.com/2013/09/top-8-diagrams-for-understanding-java/" target="_blank" rel="external">Top 8 Diagrams for Understanding Java</a></li>
-<li><a href="(&lt;!--￼4--">Java字符串的十大问题</a>)</li>
-</ul>
-<h3 id="参考文档"><a href="#参考文档" class="headerlink" title="参考文档"></a>参考文档</h3><ul>
-<li><a href="http://www.programcreek.com/2013/04/why-string-is-immutable-in-java/" target="_blank" rel="external">Why String is immutable in Java ?</a></li>
-</ul>
-]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在Java中String是一个不可变类。不可变类是一个简单的类，它的实例不能被修改。创建实例的时候在一个实例中的所有信息被初始化并且信息不能被修改。不可变类有许多的优点。本文总结了为什么字符串被设计成不可变的。一个很好的答案是：取决于对内存，同步，数据结构等的深刻理解。&lt;/p&gt;
     
     </summary>
     
