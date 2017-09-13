@@ -1,0 +1,61 @@
+<div class="page__comments">
+  {% capture comments_label %}{{ site.data.ui-text[site.locale].comments_label | default: "Comments" }}{% endcapture %}
+    {% case site.comments.provider %}
+      {% when "discourse" %}
+        <h4 class="page__comments-title">{{ comments_label }}</h4>
+        <section id="discourse-comments"></section>
+      {% when "disqus" %}
+        <h4 class="page__comments-title">{{ comments_label }}</h4>
+        <section id="disqus_thread"></section>
+      {% when "facebook" %}
+        <h4 class="page__comments-title">{{ comments_label }}</h4>
+        <section class="fb-comments" data-href="{{ page.url | absolute_url }}" data-mobile="true" data-num-posts="{{ site.comments.facebook.num_posts | default: 5 }}" data-width="100%" data-colorscheme="{{ site.comments.facebook.colorscheme | default: 'light' }}"></section>
+      {% when "google-plus" %}
+        <h4 class="page__comments-title">{{ comments_label }}</h4>
+        <section id="g-comments" class="g-comments">Loading Google+ Comments ...</section>
+        <script>
+          function initComment() {
+            gapi.comments.render("g-comments", {
+              href: "{{ page.url | absolute_url }}",
+              width: "624",
+              first_party_property: "BLOGGER",
+              view_type: "FILTERED_POSTMOD"
+            })
+          }
+        </script>
+        <script async type="text/javascript" src="https://apis.google.com/js/plusone.js" onload="initComment()" />
+        <noscript>Please enable JavaScript to view the <a href="https://plus.google.com/">comments powered by Google+.</a></noscript>-->
+      {% when "staticman" %}
+        <div class="entry-comments">
+  {% if site.repository and site.staticman.branch %}
+    {% if site.data.comments[page.slug] %}
+      <!-- Start static comments -->
+      <div id="comments" class="js-comments">
+        <header class="section-title">
+          <h3>{% if site.data.comments[page.slug].size > 1 %}{{ site.data.comments[page.slug] | size | append: ' ' }}{% endif %}Comments</h3>
+        </header>
+        {% assign comments = site.data.comments[page.slug] | where_exp: 'item', 'item.replying_to == blank' %}
+        {% for comment in comments %}
+          {% assign index       = forloop.index %}
+          {% assign r           = comment.replying_to %}
+          {% assign replying_to = r | to_integer %}
+          {% assign avatar      = comment.avatar %}
+          {% assign email       = comment.email %}
+          {% assign name        = comment.name %}
+          {% assign url         = comment.url %}
+          {% assign date        = comment.date %}
+          {% assign message     = comment.message %}
+          {% include comment.html index=index replying_to=replying_to avatar=avatar email=email name=name url=url date=date message=message %}
+        {% endfor %}
+      </div>
+      <!-- End static comments -->
+    {% endif %}
+
+    {% include comment-form.html %}
+  {% endif %}
+</div>
+
+      {% when "custom" %}
+        <section id="custom-comments"></section>
+  {% endcase %}
+</div>
